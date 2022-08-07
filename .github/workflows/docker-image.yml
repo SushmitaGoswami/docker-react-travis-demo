@@ -11,14 +11,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build -t sgoswamigeek/docker-react-demo -f Dockerfile.dev .
     
     - name: Run Tests
       run: docker run -e CI=true sgoswamigeek/docker-react-demo npm run test 
-
 
     - uses: mr-smithers-excellent/docker-build-push@v5
     - name: Build & push Docker image
