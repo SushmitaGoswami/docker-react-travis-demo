@@ -1,0 +1,35 @@
+sudo: required
+# dependency env
+services:
+  - docker
+
+# This for building the docker image
+before_install:
+  - docker build -t sgoswamigeek/docker-react-demo -f Dockerfile.dev .
+
+
+#Here as the service doesn't depend on any other services, 
+# so we don't need to do any env set up.
+# Otherwise, if needed env (up other needed services) must be set up using docker-compose file
+
+
+# This is for running tests with the previous docker image by creating a container
+script:
+  - docker run -e CI=true sgoswamigeek/docker-react-demo npm run test 
+
+# This is for deployment
+# AWS Beanstalk -> create application -> create env -> with docker as env -> there will be multiple EBS behind a load balancer
+# access_key and secret will be stored by travis CI env variable injection feature
+# expose port of nginx will allow the access via nginx
+deploy:
+  provider: elasticbeanstalk
+  region: "<region>"
+  app: "<app_name>"
+  env: "<env_name>"
+  bucket_name: "<s3_bucket_name>"
+  bucket_path: "<app_name>"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+
