@@ -33,5 +33,3 @@ jobs:
         context: ./
         file: ./Dockerfile
         push: true
-        cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/docker-react-demo:buildcache
-        cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/docker-react-demo:buildcache,mode=max
